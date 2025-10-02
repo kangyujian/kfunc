@@ -1,0 +1,14 @@
+{{define "content"}}
+  <h2>业务空间</h2>
+  <div class="grid">
+    {{range .Spaces}}
+      <div class="card">
+        <div><strong>{{.}}</strong></div>
+        <div class="muted">查看该空间下的工具</div>
+        <div style="margin-top:8px"><a class="btn" href="/spaces/{{.}}">进入空间</a></div>
+      </div>
+    {{else}}
+      <div class="muted">暂无空间</div>
+    {{end}}
+  </div>
+{{end}}

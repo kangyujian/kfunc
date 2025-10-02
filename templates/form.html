@@ -1,0 +1,43 @@
+{{define "content"}}
+  <a class="btn secondary" href="/spaces/{{.Tool.Space}}">返回空间</a>
+  <h2 style="margin-top:12px">{{.Tool.Name}}</h2>
+  <div class="muted">{{.Tool.Description}}</div>
+  <form method="post" action="{{.Action}}" style="margin-top:16px">
+    {{range .Fields}}
+      <div class="field">
+        <label for="{{.Name}}">{{if .Label}}{{.Label}}{{else}}{{.Name}}{{end}}{{if .Required}} *{{end}}</label>
+        {{if eq .Type "text"}}
+          <input type="text" id="{{.Name}}" name="{{.Name}}" placeholder="{{.Placeholder}}" value="{{.DefaultValue}}" />
+        {{else if eq .Type "number"}}
+          <input type="number" step="any" id="{{.Name}}" name="{{.Name}}" placeholder="{{.Placeholder}}" value="{{.DefaultValue}}" />
+        {{else if eq .Type "textarea"}}
+          <textarea id="{{.Name}}" name="{{.Name}}" placeholder="{{.Placeholder}}">{{.DefaultValue}}</textarea>
+        {{else if eq .Type "select"}}
+          <select id="{{.Name}}" name="{{.Name}}">
+            {{range .Options}}
+              <option value="{{.}}">{{.}}</option>
+            {{end}}
+          </select>
+        {{else if eq .Type "multiselect"}}
+          <select id="{{.Name}}" name="{{.Name}}" multiple>
+            {{range .Options}}
+              <option value="{{.}}">{{.}}</option>
+            {{end}}
+          </select>
+        {{else if eq .Type "radio"}}
+          <div class="options">
+            {{$fname := .Name}}
+            {{range .Options}}
+              <label><input type="radio" name="{{$fname}}" value="{{.}}" /> {{.}}</label>
+            {{end}}
+          </div>
+        {{else if eq .Type "checkbox"}}
+          <input type="checkbox" id="{{.Name}}" name="{{.Name}}" />
+        {{else}}
+          <input type="text" id="{{.Name}}" name="{{.Name}}" placeholder="{{.Placeholder}}" value="{{.DefaultValue}}" />
+        {{end}}
+      </div>
+    {{end}}
+    <button class="btn" type="submit">提交</button>
+  </form>
+{{end}}

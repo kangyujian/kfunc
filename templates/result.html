@@ -1,0 +1,7 @@
+{{define "content"}}
+  <a class="btn secondary" href="/tools/{{.Tool.ID}}">返回表单</a>
+  <h2 style="margin-top:12px">{{.Tool.Name}} · 执行结果</h2>
+  <div class="muted">{{.Tool.Description}}</div>
+  <div class="result" style="margin-top:12px">{{printf "%#v" .Result}}</div>
+  <div style="margin-top:12px"><a class="btn" href="/spaces/{{.Tool.Space}}">返回空间</a></div>
+{{end}}

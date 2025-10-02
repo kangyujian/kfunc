@@ -1,0 +1,15 @@
+{{define "content"}}
+  <a class="btn secondary" href="/">返回首页</a>
+  <h2 style="margin-top:12px">空间：{{.Space}}</h2>
+  <div class="grid">
+    {{range .Tools}}
+      <div class="card">
+        <div><strong>{{.Name}}</strong></div>
+        <div class="muted" style="margin-top:4px">{{.Description}}</div>
+        <div style="margin-top:8px"><a class="btn" href="/tools/{{.ID}}">打开工具</a></div>
+      </div>
+    {{else}}
+      <div class="muted">该空间暂时没有工具</div>
+    {{end}}
+  </div>
+{{end}}
