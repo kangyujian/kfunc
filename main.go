@@ -2,6 +2,7 @@ package main
 
 import (
     "embed"
+    "encoding/json"
     "fmt"
     "html/template"
     "log"
@@ -38,7 +39,16 @@ func main() {
 }
 
 func render(w http.ResponseWriter, name string, data any) {
-    t, err := template.ParseFS(tmplFS, "templates/layout.html", path.Join("templates", name))
+    funcMap := template.FuncMap{
+        "toJSON": func(v any) template.JS {
+            b, err := json.Marshal(v)
+            if err != nil {
+                return template.JS("null")
+            }
+            return template.JS(b)
+        },
+    }
+    t, err := template.New("layout").Funcs(funcMap).ParseFS(tmplFS, "templates/layout.html", path.Join("templates", name))
     if err != nil {
         http.Error(w, fmt.Sprintf("模板错误: %v", err), http.StatusInternalServerError)
         return

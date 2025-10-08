@@ -2,6 +2,30 @@
   <a class="btn secondary" href="/tools/{{.Tool.ID}}">返回表单</a>
   <h2 style="margin-top:12px">{{.Tool.Name}} · 执行结果</h2>
   <div class="muted">{{.Tool.Description}}</div>
-  <div class="result" style="margin-top:12px">{{printf "%#v" .Result}}</div>
+  <div id="json-viewer" style="margin-top:12px"></div>
+  <pre id="json-fallback" class="result" style="margin-top:12px; display:none"></pre>
+  <noscript>
+    <div class="result" style="margin-top:12px"><pre>{{printf "%#v" .Result}}</pre></div>
+  </noscript>
   <div style="margin-top:12px"><a class="btn" href="/spaces/{{.Tool.Space}}">返回空间</a></div>
+  <link rel="stylesheet" href="https://unpkg.com/json-formatter-js@2.3.4/dist/json-formatter.min.css">
+  <script src="https://unpkg.com/json-formatter-js@2.3.4/dist/json-formatter.min.js"></script>
+  <script>
+    // 将后端结果注入前端并以可折叠的树形展示
+    const data = {{toJSON .Result}};
+    const container = document.getElementById('json-viewer');
+    try {
+      if (window.JSONFormatter) {
+        const formatter = new JSONFormatter(data, 2);
+        container.appendChild(formatter.render());
+      } else {
+        throw new Error('JSONFormatter not available');
+      }
+    } catch (e) {
+      // 插件不可用或加载失败时的回退展示
+      const pre = document.getElementById('json-fallback');
+      pre.textContent = JSON.stringify(data, null, 2);
+      pre.style.display = 'block';
+    }
+  </script>
 {{end}}
