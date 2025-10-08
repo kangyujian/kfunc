@@ -140,3 +140,17 @@ examples.Register()
 - `multiselect` binds to `[]string`.
 - `number` binds to `float64` or any numeric kinds; parsing errors return 400.
 - Validation can be enhanced in `Run()` or by extending `form.go`.
+ 
+---
+ 
+## Framework & Run Notes
+ 
+ - Routing is implemented with Gin (v1.9.1); HTML is rendered via `html/template` using embedded templates (`embed.FS`).
+ - Port: default is `8080`. You can override via `PORT` env: `PORT=8081 go run .`.
+ - Mainland China users: set Go module proxy if needed: `go env -w GOPROXY=https://goproxy.cn,direct`.
+ - Trusted proxies: in production, configure explicitly to avoid trusting all proxies:
+ 
+ ```go
+ r := gin.Default()
+ r.SetTrustedProxies(nil) // or set specific CIDR ranges
+ ```
